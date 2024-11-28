@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -31,7 +32,7 @@ public class Configuration {
     * */
     public void configureParameters() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("System Configuration");
+        System.out.println("_________________ System Configuration __________________");
 
         // Prompt for config parameters and validate
         this.totalTickets = validateInputs(scanner,"Enter total number of tickets: ",1,Integer.MAX_VALUE);
@@ -48,17 +49,18 @@ public class Configuration {
      * @return value
      */
     public int validateInputs(Scanner scanner, String prompt, int min, int max) {
-        int value;
+        int value = 0;
+        boolean valid = false;
 
-        while(true) {
+        while(!valid) {
             try{
                 System.out.print(prompt);
                 value = Integer.parseInt(scanner.nextLine());   // Take input as a string and convert to int (Check correct input type)
 
-                if (value >= min && value <= max) {  // Check if Input within range. Accepted
-                    break;
-                } else {
+                if (value < min || value > max) {  // Check if Input within range. Accepted
                     System.out.println("Invalid input. Value must be between "+ min + " and "  + max + ".");
+                } else {
+                    valid = true;
                 }
             }
             catch (NumberFormatException e) {
@@ -75,7 +77,7 @@ public class Configuration {
     * Save configuration in to JSON file
     * */
     public void saveConfiguration() {
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
             gson.toJson(this,writer);
@@ -90,8 +92,11 @@ public class Configuration {
     public static Configuration loadConfiguration() {
         Gson gson = new Gson();
 
-        try (FileReader reader = new FileReader(CONFIG_FILE)) {
-            return gson.fromJson(reader, Configuration.class);
+        try {
+            FileReader reader = new FileReader(CONFIG_FILE);
+            Configuration config =  gson.fromJson(reader, Configuration.class);
+            System.out.println(config);
+            return config;
         }
         catch (IOException e) {
             System.out.println("No Configuration file found! Starting with default configuration");
@@ -99,4 +104,15 @@ public class Configuration {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Configuration{" +
+                "totalTickets=" + totalTickets +
+                ", ticketReleaseRate=" + ticketReleaseRate +
+                ", customerRetrievalRate=" + customerRetrievalRate +
+                ", maxTicketCapacity=" + maxTicketCapacity +
+                ", totalVendors=" + totalVendors +
+                ", totalCustomers=" + totalCustomers +
+                '}';
+    }
 }
