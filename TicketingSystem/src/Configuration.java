@@ -26,8 +26,8 @@ public class Configuration {
         this.totalCustomers = 5;
     }
 
-    /*
-    * Take input from user for configuration parameters
+    /**
+     * Take input from user for configuration parameters
     * Set non-static fields with the prompt values
     * */
     public void configureParameters() {
@@ -43,9 +43,9 @@ public class Configuration {
         this.totalCustomers = validateInputs(scanner, "Enter total number of customers: ",1, Integer.MAX_VALUE);
     }
 
-    /*
-     * Validate user inputs
-     * @Param scanner object, prompt message, minimum acceptable value, maximum acceptable value
+    /**
+     *  Validate user inputs to check tje correct data type and range
+     * @Param scanner, prompt, minimum acceptable value, maximum acceptable value
      * @return value
      */
     public int validateInputs(Scanner scanner, String prompt, int min, int max) {
@@ -73,8 +73,8 @@ public class Configuration {
         return value;
     }
 
-    /*
-    * Save configuration in to JSON file
+    /**
+     * Save configuration in to JSON file with serialization
     * */
     public void saveConfiguration() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -86,9 +86,10 @@ public class Configuration {
         }
     }
 
-    /*
-    * Load configuration from the JSON file
-    * */
+    /**
+     * Load configuration from the JSON file
+     * @return configuration
+     */
     public static Configuration loadConfiguration() {
         Gson gson = new Gson();
 
@@ -102,6 +103,54 @@ public class Configuration {
             System.out.println("No Configuration file found! Starting with default configuration");
             return new Configuration();
         }
+    }
+
+    public int getTotalTickets() {
+        return totalTickets;
+    }
+
+    public void setTotalTickets(int totalTickets) {
+        this.totalTickets = totalTickets;
+    }
+
+    public int getTicketReleaseRate() {
+        return ticketReleaseRate;
+    }
+
+    public void setTicketReleaseRate(int ticketReleaseRate) {
+        this.ticketReleaseRate = ticketReleaseRate;
+    }
+
+    public int getCustomerRetrievalRate() {
+        return customerRetrievalRate;
+    }
+
+    public void setCustomerRetrievalRate(int customerRetrievalRate) {
+        this.customerRetrievalRate = customerRetrievalRate;
+    }
+
+    public int getMaxTicketCapacity() {
+        return maxTicketCapacity;
+    }
+
+    public void setMaxTicketCapacity(int maxTicketCapacity) {
+        this.maxTicketCapacity = maxTicketCapacity;
+    }
+
+    public int getTotalVendors() {
+        return totalVendors;
+    }
+
+    public void setTotalVendors(int totalVendors) {
+        this.totalVendors = totalVendors;
+    }
+
+    public int getTotalCustomers() {
+        return totalCustomers;
+    }
+
+    public void setTotalCustomers(int totalCustomers) {
+        this.totalCustomers = totalCustomers;
     }
 
     @Override

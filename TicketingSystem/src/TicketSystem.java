@@ -7,10 +7,10 @@ public class TicketSystem {
         System.out.println("\nLoading default configuration...");
         Configuration config = Configuration.loadConfiguration();
 
-        boolean choice = true;
+        boolean choiceFlag = true; // flag to check status
 
-        while (choice) {
-            // configure system
+        // configure system
+        while (choiceFlag) {
             System.out.println("\n****** Welcome to Ticket System! *******");
             System.out.println("____________ Configuration Settings ______________");
             System.out.println("1. Start \n2.Stop");
@@ -25,11 +25,11 @@ public class TicketSystem {
 
                     config.saveConfiguration();
                     System.out.println("Configuration saved successfully.");
-                    choice = false;
+                    choiceFlag = false;
                     break;
                 case "2":
                     System.out.println("Exiting from the application... \nThank you! Have a nice day");
-                    choice = false;
+                    choiceFlag = false;
                     System.exit(0);
                     break;
                 default:
