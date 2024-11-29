@@ -1,22 +1,22 @@
 import java.math.BigDecimal;
 
 public class Ticket {
-    private final int ticketId;
-    private final String ticketName;
+    private final String seatName;
+    private final String eventName;
     private final BigDecimal ticketPrice;
 
-    public Ticket(int ticketId, String ticketName, BigDecimal ticketPrice) {
-        this.ticketId = ticketId;
-        this.ticketName = ticketName;
+    public Ticket(String seatName, String eventName, BigDecimal ticketPrice) {
+        this.seatName = seatName;
+        this.eventName = eventName;
         this.ticketPrice = ticketPrice;
     }
 
-    public int getTicketId() {
-        return ticketId;
+    public String getSeatName() {
+        return seatName;
     }
 
-    public String getTicketName() {
-        return ticketName;
+    public String getEventName() {
+        return eventName;
     }
 
     public BigDecimal getTicketPrice() {
@@ -26,9 +26,9 @@ public class Ticket {
     @Override
     public String toString() {
         return "Ticket{" +
-                "ticketId=" + ticketId +
-                ", eventName='" + ticketName + '\'' +
-                ", ticketPrice=" + ticketPrice +
+                "seatName='" + seatName + '\'' +
+                ", eventName='" + eventName + '\'' +
+                ", ticketPrice= RS. " + ticketPrice +
                 '}';
     }
 }

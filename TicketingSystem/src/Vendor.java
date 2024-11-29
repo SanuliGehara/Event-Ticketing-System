@@ -1,7 +1,13 @@
+
+// I assume that all vendors are releasing tickets to the same ticket pool which is for "Spandana" event
+// All the tickets are having the same price - RS. 2000 (No early bird tickets or special seats)
+
+import java.math.BigDecimal;
+
 public class Vendor extends User{
     private final String vendorId;
     private TicketPool ticketPool;
-    private int ticketsPerRelease;  // total tickets which will be released at a time
+    private int ticketsPerRelease;  // total tickets which will be released by the vendor at the time
     private int releaseInterval;    // ticket release rate - frequency which ticket will be released at a time
 
     public Vendor(String username, String password, String vendorId, TicketPool ticketPool, int ticketsPerRelease, int releaseInterval) {
@@ -14,7 +20,25 @@ public class Vendor extends User{
 
     @Override
     public void run() {
+        for (int count=1; count<=ticketsPerRelease; count++) {
+            Ticket ticket = new Ticket(Integer.toString(count), "Spandana", new BigDecimal("2000.00"));
+            ticketPool.addTicket(ticket);
+            System.out.println("Vendor ID: " + getVendorId() + " - "+getUsername() + " added " + ticket);
 
+            // wait for a time period before releasing next ticket
+            try {
+                Thread.sleep(releaseInterval); // milliseconds
+            }
+            catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.out.println("Vendor Thread got interrupted");
+                break;
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Exception occurred! Unable to release tickets.");
+            }
+        }
     }
 
     public String getVendorId() {
