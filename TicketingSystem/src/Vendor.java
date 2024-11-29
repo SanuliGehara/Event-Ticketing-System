@@ -21,9 +21,12 @@ public class Vendor extends User{
     @Override
     public void run() {
         for (int count=1; count<=ticketsPerRelease; count++) {
+            // Check if thread is interrupted
+            if (Thread.currentThread().isInterrupted()) break;
+
             Ticket ticket = new Ticket(Integer.toString(count), "Spandana", new BigDecimal("2000.00"));
             ticketPool.addTicket(ticket);
-            System.out.println("Vendor ID: " + getVendorId() + " - "+getUsername() + " added " + ticket);
+            System.out.println(getUsername() + " added " + ticket);
 
             // wait for a time period before releasing next ticket
             try {
@@ -33,10 +36,6 @@ public class Vendor extends User{
                 Thread.currentThread().interrupt();
                 System.out.println("Vendor Thread got interrupted");
                 break;
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Exception occurred! Unable to release tickets.");
             }
         }
     }

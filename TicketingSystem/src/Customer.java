@@ -15,6 +15,9 @@ public class Customer extends User{
     @Override
     public void run() {
         for (int count=1; count <= ticketsToBuy; count++) {
+            // Check if thread is interrupted
+            if (Thread.currentThread().isInterrupted()) break;
+
             Ticket ticket = ticketPool.buyTicket();
             System.out.println("Customer ID: " + getCustomerId() + " - "+getUsername() + " bought " + ticket);
 
@@ -26,10 +29,6 @@ public class Customer extends User{
                 Thread.currentThread().interrupt();
                 System.out.println("Customer Thread got interrupted");
                 break;
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Exception occurred! Unable to buy tickets.");
             }
         }
     }

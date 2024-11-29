@@ -1,15 +1,20 @@
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class TicketPool {
-    private final Queue<Ticket> ticketQueue;
+    private final Queue<Ticket> ticketQueue = new LinkedList<>();
     private final int maximumCapacity;  // maximum capacity of the ticket pool
-    private int totalTicketsDistributed; //how many tickets are already added to the ticket pool
+    private int totalTickets; //current total tickets in the pool
 
-    public TicketPool(int maximumCapacity, int totalTicketsDistributed) {
-        this.ticketQueue = new LinkedList<>();
+    public TicketPool(int maximumCapacity, int totalTickets) {
         this.maximumCapacity = maximumCapacity;
-        this.totalTicketsDistributed = totalTicketsDistributed;
+        this.totalTickets = totalTickets;
+
+        //Initialize the queue with current total tickets
+        for (int count=0; count<totalTickets; count++) {
+            ticketQueue.add(new Ticket(Integer.toString(count), "Spandana", new BigDecimal("2000.00")));
+        }
     }
 
     /**
@@ -18,7 +23,7 @@ public class TicketPool {
      */
     public synchronized void addTicket(Ticket ticket) {
         // Wait if the ticket pool is full
-        while (ticketQueue.size() >= maximumCapacity) {
+        while (ticketQueue.size() >= maximumCapacity || totalTickets >= maximumCapacity) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -30,8 +35,9 @@ public class TicketPool {
 
         // Adds the ticket into ticketQueue
         ticketQueue.add(ticket);
+        totalTickets++;
+        System.out.println(Thread.currentThread().getName() + " added a ticket. Current size: " + ticketQueue.size() + ", Total tickets: " + totalTickets);
         notifyAll();
-        System.out.println(Thread.currentThread().getName() + " has added a ticket to the ticket pool. Current size is " + this.ticketQueue.size());
     }
 
     /**
@@ -53,8 +59,9 @@ public class TicketPool {
 
         // retrieves and removes the ticket from the ticketQueue
         Ticket ticket = ticketQueue.poll();
+        totalTickets--;
         notifyAll();    // Notify producers that there is space available
-        System.out.println(Thread.currentThread().getName() + " has bought a ticket from the pool. Current size is " + this.ticketQueue.size());
+        System.out.println(Thread.currentThread().getName() + " bought a ticket. Remaining size: " + ticketQueue.size() + ", Total tickets: " + totalTickets);
         return ticket;
     }
 
@@ -64,5 +71,13 @@ public class TicketPool {
 
     public int getMaximumCapacity() {
         return maximumCapacity;
+    }
+
+    public int getTotalTickets() {
+        return totalTickets;
+    }
+
+    public void setTotalTickets(int totalTickets) {
+        this.totalTickets = totalTickets;
     }
 }

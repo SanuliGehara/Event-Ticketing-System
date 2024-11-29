@@ -35,7 +35,7 @@ public class Configuration {
         System.out.println("_________________ System Configuration __________________");
 
         // Prompt for config parameters and validate
-        this.totalTickets = validateInputs(scanner,"Enter total number of tickets: ",1,Integer.MAX_VALUE);
+        this.totalTickets = validateInputs(scanner,"Enter total number of tickets: ",0,Integer.MAX_VALUE);
         this.ticketReleaseRate = validateInputs(scanner,"Enter Ticket Release Rate in Seconds(S): ",1, Integer.MAX_VALUE)*1000;
         this.customerRetrievalRate = validateInputs(scanner,"Enter Customer Retrieval in Second(S): ",1,Integer.MAX_VALUE)*1000;
         this.maxTicketCapacity = validateInputs(scanner,"Enter maximum ticket capacity: ",1,Integer.MAX_VALUE);
