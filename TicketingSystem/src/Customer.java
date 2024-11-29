@@ -15,8 +15,10 @@ public class Customer extends User{
     @Override
     public void run() {
         for (int count=1; count <= ticketsToBuy; count++) {
-            // Check if thread is interrupted
-            if (Thread.currentThread().isInterrupted()) break;
+            // Check if thread is interrupted or system is stopped
+            if (Thread.currentThread().isInterrupted() || !TicketSystem.isRunning()) {
+                break;
+            }
 
             Ticket ticket = ticketPool.buyTicket();
             System.out.println("Customer ID: " + getCustomerId() + " - "+getUsername() + " bought " + ticket);

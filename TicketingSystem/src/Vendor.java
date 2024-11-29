@@ -21,8 +21,10 @@ public class Vendor extends User{
     @Override
     public void run() {
         for (int count=1; count<=ticketsPerRelease; count++) {
-            // Check if thread is interrupted
-            if (Thread.currentThread().isInterrupted()) break;
+            // Check if thread is interrupted or system is stopped
+            if (Thread.currentThread().isInterrupted() || !TicketSystem.isRunning()) {
+                break;
+            }
 
             Ticket ticket = new Ticket(Integer.toString(count), "Spandana", new BigDecimal("2000.00"));
             ticketPool.addTicket(ticket);
@@ -38,6 +40,7 @@ public class Vendor extends User{
                 break;
             }
         }
+        System.out.println(getUsername() + " finished adding tickets.");
     }
 
     public String getVendorId() {

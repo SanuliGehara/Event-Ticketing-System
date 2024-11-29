@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class TicketSystem {
+    private static volatile boolean isRunning = true; // Flag to control thread termination
+
     public static void main(String[] args) {
         //Load configuration or start with the default configuration
         System.out.println("\nLoading default configuration...");
@@ -35,25 +37,38 @@ public class TicketSystem {
                     Customer[] customers = new Customer[config.getTotalCustomers()];
 
                     // Create and start threads to run the application
+                    Thread[] vendorThreads = new Thread[vendors.length];
                     for (int count = 0; count<vendors.length; count++) {
                         vendors[count] = new Vendor("Vendor-"+(count+1), "password","V"+(count+1),ticketPool,2,config.getTicketReleaseRate());
-                        Thread vendorThread = new Thread(vendors[count], "Vendor-"+(count+1));
-                        vendorThread.start();
+                        vendorThreads[count] = new Thread(vendors[count], "Vendor-" + (count + 1));
+                        vendorThreads[count].start();
                     }
 
+                    Thread[] customerThreads = new Thread[customers.length];
                     for (int count = 0; count < customers.length; count++) {
                         customers[count] = new Customer("Customer-" + (count + 1), "password", "C" + (count + 1), ticketPool, 2, config.getCustomerRetrievalRate());
-                        Thread customerThread = new Thread(customers[count], "Customer-" + (count + 1));
-                        customerThread.start();
+                        customerThreads[count] = new Thread(customers[count], "Customer-" + (count + 1));
+                        customerThreads[count].start();
                     }
 
                     // Wait for user input to stop
-                    System.out.println("System is running. Press 'Enter' to stop...");
+                    System.out.println("\nSystem is running. Press 'Enter' to stop...\n");
                     input.nextLine();
+                    isRunning = false;
+
+                    // Stop all threads
+                    for (Thread thread : vendorThreads) {
+                        thread.interrupt();
+                    }
+                    for (Thread thread : customerThreads) {
+                        thread.interrupt();
+                    }
+
+                    System.out.println("System stopped.");
                     break;
 
                 case "2":
-                    System.out.println("Exiting from the application... \nThank you! Have a nice day");
+                    System.out.println("Exiting from the application...");
                     choiceFlag = false;
                     System.exit(0);
                     break;
@@ -61,5 +76,9 @@ public class TicketSystem {
                     System.out.println("Invalid option! Please enter 1 to start or 2 to stop.\n");
             }
         }
+    }
+
+    public static boolean isRunning() {
+        return isRunning;
     }
 }
