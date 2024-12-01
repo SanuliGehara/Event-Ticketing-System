@@ -21,7 +21,7 @@ public class Customer extends User{
             }
 
             Ticket ticket = ticketPool.buyTicket();
-            System.out.println("Customer ID: " + getCustomerId() + " - "+getUsername() + " bought " + ticket);
+            //System.out.println("Customer ID: " + getCustomerId() + " - "+getUsername() + " bought " + ticket);
 
             // Wait before retrieving next ticket
             try {

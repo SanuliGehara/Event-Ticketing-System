@@ -28,7 +28,7 @@ public class Vendor extends User{
 
             Ticket ticket = new Ticket(Integer.toString(count), "Spandana", new BigDecimal("2000.00"));
             ticketPool.addTicket(ticket);
-            System.out.println(getUsername() + " added " + ticket);
+            //System.out.println(getUsername() + " added " + ticket);
 
             // wait for a time period before releasing next ticket
             try {

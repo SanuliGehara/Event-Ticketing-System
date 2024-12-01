@@ -25,6 +25,7 @@ public class TicketPool {
         // Wait if the ticket pool is full
         while (ticketQueue.size() >= maximumCapacity || totalTickets >= maximumCapacity) {
             try {
+                System.out.println("Dear " + Thread.currentThread().getName() +", Ticket pool is full! Please wait until space available");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -36,7 +37,7 @@ public class TicketPool {
         // Adds the ticket into ticketQueue
         ticketQueue.add(ticket);
         totalTickets++;
-        System.out.println(Thread.currentThread().getName() + " added a ticket. Current size: " + ticketQueue.size() + ", Total tickets: " + totalTickets);
+        System.out.println(Thread.currentThread().getName() + " added a ticket. Current size: " + ticketQueue.size() +" tickets, Remaining size: "+ (maximumCapacity - ticketQueue.size())+", Total tickets: " + totalTickets);
         notifyAll();
     }
 
@@ -49,6 +50,7 @@ public class TicketPool {
         // Wait if the ticketQueue is empty
         while (ticketQueue.isEmpty()) {
             try {
+                System.out.println("Dear " + Thread.currentThread().getName() +", Currently no tickets available. Please wait till tickets are available");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt(); // sets the thread's flag as interrupted
@@ -61,7 +63,7 @@ public class TicketPool {
         Ticket ticket = ticketQueue.poll();
         totalTickets--;
         notifyAll();    // Notify producers that there is space available
-        System.out.println(Thread.currentThread().getName() + " bought a ticket. Remaining size: " + ticketQueue.size() + ", Total tickets: " + totalTickets);
+        System.out.println(Thread.currentThread().getName() + " bought a ticket. Remaining " + ticketQueue.size() + " tickets , Total available tickets: " + totalTickets);
         return ticket;
     }
 

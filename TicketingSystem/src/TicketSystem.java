@@ -46,7 +46,7 @@ public class TicketSystem {
 
                     Thread[] customerThreads = new Thread[customers.length];
                     for (int count = 0; count < customers.length; count++) {
-                        customers[count] = new Customer("Customer-" + (count + 1), "password", "C" + (count + 1), ticketPool, 2, config.getCustomerRetrievalRate());
+                        customers[count] = new Customer("Customer-" + (count + 1), "password", "C" + (count + 1), ticketPool, 5, config.getCustomerRetrievalRate());
                         customerThreads[count] = new Thread(customers[count], "Customer-" + (count + 1));
                         customerThreads[count].start();
                     }
