@@ -15,6 +15,8 @@ public class Configuration {
     private int maxTicketCapacity;  // Maximum capacity of the ticket pool
     private int totalVendors;
     private int totalCustomers;
+    private int ticketsPerRelease;
+    private int ticketsPerPurchase;
 
     //Constructor
     public Configuration() {
@@ -24,6 +26,8 @@ public class Configuration {
         this.maxTicketCapacity = 20;
         this.totalVendors = 5;
         this.totalCustomers = 5;
+        this.ticketsPerRelease = 2;
+        this.ticketsPerPurchase = 2;
     }
 
     /**
@@ -40,7 +44,9 @@ public class Configuration {
         this.ticketReleaseRate = validateInputs(scanner,"Enter Ticket Release Rate in Seconds(S): ",1, Integer.MAX_VALUE)*1000;
         this.customerRetrievalRate = validateInputs(scanner,"Enter Customer Retrieval in Second(S): ",1,Integer.MAX_VALUE)*1000;
         this.totalVendors = validateInputs(scanner,"Enter total number of vendors: ",1,Integer.MAX_VALUE);
+        this.ticketsPerRelease = validateInputs(scanner,"Enter total tickets per release for a vendor: ",1,maxTicketCapacity);
         this.totalCustomers = validateInputs(scanner, "Enter total number of customers: ",1, Integer.MAX_VALUE);
+        this.ticketsPerPurchase = validateInputs(scanner, "Enter total tickets per a purchase for a customer: ",1, maxTicketCapacity);
     }
 
     /**
@@ -103,12 +109,44 @@ public class Configuration {
         }
     }
 
-    public int getTotalTickets() {
-        return totalTickets;
+    public int getTicketsPerPurchase() {
+        return ticketsPerPurchase;
     }
 
-    public void setTotalTickets(int totalTickets) {
-        this.totalTickets = totalTickets;
+    public void setTicketsPerPurchase(int ticketsPerPurchase) {
+        this.ticketsPerPurchase = ticketsPerPurchase;
+    }
+
+    public int getTotalCustomers() {
+        return totalCustomers;
+    }
+
+    public void setTotalCustomers(int totalCustomers) {
+        this.totalCustomers = totalCustomers;
+    }
+
+    public int getTicketsPerRelease() {
+        return ticketsPerRelease;
+    }
+
+    public void setTicketsPerRelease(int ticketsPerRelease) {
+        this.ticketsPerRelease = ticketsPerRelease;
+    }
+
+    public int getTotalVendors() {
+        return totalVendors;
+    }
+
+    public void setTotalVendors(int totalVendors) {
+        this.totalVendors = totalVendors;
+    }
+
+    public int getMaxTicketCapacity() {
+        return maxTicketCapacity;
+    }
+
+    public void setMaxTicketCapacity(int maxTicketCapacity) {
+        this.maxTicketCapacity = maxTicketCapacity;
     }
 
     public int getTicketReleaseRate() {
@@ -127,28 +165,12 @@ public class Configuration {
         this.customerRetrievalRate = customerRetrievalRate;
     }
 
-    public int getMaxTicketCapacity() {
-        return maxTicketCapacity;
+    public int getTotalTickets() {
+        return totalTickets;
     }
 
-    public void setMaxTicketCapacity(int maxTicketCapacity) {
-        this.maxTicketCapacity = maxTicketCapacity;
-    }
-
-    public int getTotalVendors() {
-        return totalVendors;
-    }
-
-    public void setTotalVendors(int totalVendors) {
-        this.totalVendors = totalVendors;
-    }
-
-    public int getTotalCustomers() {
-        return totalCustomers;
-    }
-
-    public void setTotalCustomers(int totalCustomers) {
-        this.totalCustomers = totalCustomers;
+    public void setTotalTickets(int totalTickets) {
+        this.totalTickets = totalTickets;
     }
 
     @Override
@@ -156,10 +178,12 @@ public class Configuration {
         return "Configuration{" +
                 "totalTickets=" + totalTickets +
                 ", ticketReleaseRate=" + ticketReleaseRate +
-                ", customerRetrievalRate=" + customerRetrievalRate +
-                ", maxTicketCapacity=" + maxTicketCapacity +
+                " (ms), customerRetrievalRate=" + customerRetrievalRate +
+                " (ms), maxTicketCapacity=" + maxTicketCapacity +
                 ", totalVendors=" + totalVendors +
                 ", totalCustomers=" + totalCustomers +
+                ", ticketsPerRelease=" + ticketsPerRelease +
+                ", ticketsPerPurchase=" + ticketsPerPurchase +
                 '}';
     }
 }

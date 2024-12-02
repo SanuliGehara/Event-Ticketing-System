@@ -46,14 +46,14 @@ public class TicketSystem {
                     // Create and start threads to run the application
                     Thread[] vendorThreads = new Thread[vendors.length];
                     for (int count = 0; count<vendors.length; count++) {
-                        vendors[count] = new Vendor("Vendor-"+(count+1), "password","V"+(count+1),ticketPool,2,config.getTicketReleaseRate());
+                        vendors[count] = new Vendor("Vendor-"+(count+1), "password","V"+(count+1),ticketPool,config.getTicketsPerRelease(), config.getTicketReleaseRate());
                         vendorThreads[count] = new Thread(vendors[count], "Vendor-" + (count + 1));
                         vendorThreads[count].start();
                     }
 
                     Thread[] customerThreads = new Thread[customers.length];
                     for (int count = 0; count < customers.length; count++) {
-                        customers[count] = new Customer("Customer-" + (count + 1), "password", "C" + (count + 1), ticketPool, 5, config.getCustomerRetrievalRate());
+                        customers[count] = new Customer("Customer-" + (count + 1), "password", "C" + (count + 1), ticketPool, config.getTicketsPerPurchase(), config.getCustomerRetrievalRate());
                         customerThreads[count] = new Thread(customers[count], "Customer-" + (count + 1));
                         customerThreads[count].start();
                     }
