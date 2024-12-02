@@ -4,7 +4,7 @@ import java.util.Queue;
 
 public class TicketPool {
     private final Queue<Ticket> ticketQueue = new LinkedList<>();
-    private final int maximumCapacity;  // maximum capacity of the ticket pool
+    private final int maximumCapacity;
     private int totalTickets; //current total tickets in the pool
 
     public TicketPool(int maximumCapacity, int totalTickets) {
@@ -63,7 +63,7 @@ public class TicketPool {
         Ticket ticket = ticketQueue.poll();
         totalTickets--;
         notifyAll();    // Notify producers that there is space available
-        System.out.println(Thread.currentThread().getName() + " bought " + ticket.getSeatName() + ". Remaining " + ticketQueue.size() + " tickets , Total available tickets: " + totalTickets);
+        System.out.println(Thread.currentThread().getName() + " bought " + ticket.getSeatId() + ". Remaining " + ticketQueue.size() + " tickets , Total available tickets: " + totalTickets);
         return ticket;
     }
 
