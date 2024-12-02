@@ -26,7 +26,7 @@ public class Vendor extends User{
                 break;
             }
 
-            Ticket ticket = new Ticket(Integer.toString(count), "Spandana", new BigDecimal("2000.00"));
+            Ticket ticket = new Ticket("Ticket-" + System.currentTimeMillis(), "Spandana", new BigDecimal("2000.00"));
             ticketPool.addTicket(ticket);
             //System.out.println(getUsername() + " added " + ticket);
 
@@ -36,8 +36,8 @@ public class Vendor extends User{
             }
             catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                System.out.println("Vendor Thread got interrupted");
-                break;
+                System.out.println(this.getUsername()+" got interrupted");
+                return;
             }
         }
         System.out.println(getUsername() + " finished adding tickets.");

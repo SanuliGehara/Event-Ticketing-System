@@ -18,10 +18,10 @@ public class Configuration {
 
     //Constructor
     public Configuration() {
-        this.totalTickets = 50;
+        this.totalTickets = 10;
         this.ticketReleaseRate = 1000; // Default: 1 second
         this.customerRetrievalRate = 1000; // Default: 1 second
-        this.maxTicketCapacity = 10;
+        this.maxTicketCapacity = 20;
         this.totalVendors = 5;
         this.totalCustomers = 5;
     }
@@ -95,9 +95,7 @@ public class Configuration {
 
         try {
             FileReader reader = new FileReader(CONFIG_FILE);
-            Configuration config =  gson.fromJson(reader, Configuration.class);
-            System.out.println(config);
-            return config;
+            return new Gson().fromJson(reader, Configuration.class);
         }
         catch (IOException e) {
             System.out.println("No Configuration file found! Starting with default configuration");

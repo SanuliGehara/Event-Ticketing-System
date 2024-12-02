@@ -5,8 +5,7 @@ public class TicketSystem {
     private static volatile boolean isRunning = true; // Flag to control thread termination
 
     public static void main(String[] args) {
-        //Load configuration or start with the default configuration
-        System.out.println("\nLoading default configuration...");
+        //Load configuration
         Configuration config = Configuration.loadConfiguration();
 
         boolean choiceFlag = true; // flag to check status
@@ -22,11 +21,19 @@ public class TicketSystem {
 
             switch (startInput) {
                 case "1":
-                    // Start new Configuration
-                    config.configureParameters();
+                    // Ask to run with default config
+                    System.out.print("Do you want to configure the system? (yes/no): ");
+                    String choice = input.nextLine().trim().toLowerCase();
 
-                    config.saveConfiguration();
-                    System.out.println("Configuration saved successfully.");
+                    if (choice.equals("yes")) {
+                        config.configureParameters();   // Start new Configuration
+                        config.saveConfiguration();
+                        System.out.println("New configuration saved successfully!");
+                    }
+                    else {
+                        System.out.println("\nLoading default configuration...");
+                        System.out.println(config);
+                    }
                     choiceFlag = false;
 
                     // Initialize ticket pool with to start with default configuration

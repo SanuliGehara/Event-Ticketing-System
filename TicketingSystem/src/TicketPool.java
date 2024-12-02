@@ -13,7 +13,7 @@ public class TicketPool {
 
         //Initialize the queue with current total tickets
         for (int count=0; count<totalTickets; count++) {
-            ticketQueue.add(new Ticket(Integer.toString(count), "Spandana", new BigDecimal("2000.00")));
+            ticketQueue.add(new Ticket("Ticket-" + System.currentTimeMillis(), "Spandana", new BigDecimal("2000.00")));
         }
     }
 
@@ -29,8 +29,8 @@ public class TicketPool {
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                System.out.println( Thread.currentThread().getName() + "thread got Interrupted while adding a ticket");
-                break;
+                System.out.println( Thread.currentThread().getName() + " thread got Interrupted. Ticket release Unsuccessful!");
+                return;
             }
         }
 
@@ -54,8 +54,8 @@ public class TicketPool {
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt(); // sets the thread's flag as interrupted
-                System.out.println( Thread.currentThread().getName() + "thread got Interrupted while buying a ticket");
-                break; // Thread will stop executing the loop
+                //System.out.println( Thread.currentThread().getName() + " thread got Interrupted while buying a ticket");
+                return null; // Thread will stop executing the loop
             }
         }
 
@@ -63,7 +63,7 @@ public class TicketPool {
         Ticket ticket = ticketQueue.poll();
         totalTickets--;
         notifyAll();    // Notify producers that there is space available
-        System.out.println(Thread.currentThread().getName() + " bought a ticket. Remaining " + ticketQueue.size() + " tickets , Total available tickets: " + totalTickets);
+        System.out.println(Thread.currentThread().getName() + " bought " + ticket.getSeatName() + ". Remaining " + ticketQueue.size() + " tickets , Total available tickets: " + totalTickets);
         return ticket;
     }
 

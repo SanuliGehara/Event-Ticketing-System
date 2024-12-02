@@ -19,9 +19,12 @@ public class Customer extends User{
             if (Thread.currentThread().isInterrupted() || !TicketSystem.isRunning()) {
                 break;
             }
-
             Ticket ticket = ticketPool.buyTicket();
-            //System.out.println("Customer ID: " + getCustomerId() + " - "+getUsername() + " bought " + ticket);
+            // Check for ticket availability
+            if (ticket == null) {
+                System.out.println(this.getUsername()+": Transaction denied. No tickets available!");
+                break;
+            }
 
             // Wait before retrieving next ticket
             try {
@@ -29,10 +32,11 @@ public class Customer extends User{
             }
             catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                System.out.println("Customer Thread got interrupted");
-                break;
+                System.out.println(this.getUsername()+" got interrupted");
+                return;
             }
         }
+        System.out.println(Thread.currentThread().getName() + " finished purchasing tickets.");
     }
 
     public String getCustomerId() {
