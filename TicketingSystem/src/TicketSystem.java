@@ -61,7 +61,7 @@ public class TicketSystem {
                     // Wait for user input to stop
                     System.out.println("\nSystem is running. Press 'Enter' to stop...\n");
                     input.nextLine();
-                    isRunning = false;
+                    stopSystem(); // Manually stop the system via user input
 
                     // Stop all threads
                     for (Thread thread : vendorThreads) {
@@ -77,7 +77,7 @@ public class TicketSystem {
                 case "2":
                     System.out.println("Exiting from the application...");
                     choiceFlag = false;
-                    System.exit(0);
+                    stopSystem();
                     break;
                 default:
                     System.out.println("Invalid option! Please enter 1 to start or 2 to stop.\n");
@@ -87,5 +87,11 @@ public class TicketSystem {
 
     public static boolean isRunning() {
         return isRunning;
+    }
+
+    public static void stopSystem() {
+        isRunning = false;
+        System.out.println("System is shutting down...");
+        System.exit(0);
     }
 }

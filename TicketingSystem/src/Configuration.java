@@ -43,9 +43,9 @@ public class Configuration {
         this.totalTickets = validateInputs(scanner,"Enter total number of tickets in the ticket pool: ",0,maxTicketCapacity);
         this.ticketReleaseRate = validateInputs(scanner,"Enter Ticket Release Rate in Seconds(S): ",1, Integer.MAX_VALUE)*1000;
         this.customerRetrievalRate = validateInputs(scanner,"Enter Customer Retrieval in Second(S): ",1,Integer.MAX_VALUE)*1000;
-        this.totalVendors = validateInputs(scanner,"Enter total number of vendors: ",1,Integer.MAX_VALUE);
+        this.totalVendors = validateInputs(scanner,"Enter total number of vendors: ",0,Integer.MAX_VALUE);
         this.ticketsPerRelease = validateInputs(scanner,"Enter total tickets per release for a vendor: ",1,maxTicketCapacity);
-        this.totalCustomers = validateInputs(scanner, "Enter total number of customers: ",1, Integer.MAX_VALUE);
+        this.totalCustomers = validateInputs(scanner, "Enter total number of customers: ",0, Integer.MAX_VALUE);
         this.ticketsPerPurchase = validateInputs(scanner, "Enter total tickets per a purchase for a customer: ",1, maxTicketCapacity);
     }
 
@@ -175,15 +175,14 @@ public class Configuration {
 
     @Override
     public String toString() {
-        return "Configuration{" +
-                "totalTickets=" + totalTickets +
-                ", ticketReleaseRate=" + ticketReleaseRate +
-                " (ms), customerRetrievalRate=" + customerRetrievalRate +
-                " (ms), maxTicketCapacity=" + maxTicketCapacity +
-                ", totalVendors=" + totalVendors +
-                ", totalCustomers=" + totalCustomers +
-                ", ticketsPerRelease=" + ticketsPerRelease +
-                ", ticketsPerPurchase=" + ticketsPerPurchase +
-                '}';
+        return "\nConfiguration: " +
+                "\nTotalTickets: " + totalTickets + "\n"+
+                "TicketReleaseRate: " + ticketReleaseRate/1000 + " Seconds\n"+
+                "CustomerRetrievalRate: " + customerRetrievalRate/1000 + " Seconds\n"+
+                "MaxTicketCapacity: " + maxTicketCapacity + "\n"+
+                "TotalVendors: " + totalVendors + "\n"+
+                "TotalCustomers: " + totalCustomers + "\n"+
+                "TicketsPerRelease: " + ticketsPerRelease + "\n"+
+                "TicketsPerPurchase: " + ticketsPerPurchase + "\n";
     }
 }

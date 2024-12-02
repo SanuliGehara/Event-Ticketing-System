@@ -20,12 +20,20 @@ public class TicketPool {
      * @param ticket
      */
     public synchronized void addTicket(Ticket ticket) {
-        // Wait if the ticket pool is full
-        while (ticketQueue.size() >= maximumCapacity) {
+        long startTime = System.currentTimeMillis();
+
+        while (ticketQueue.size() >= maximumCapacity) {     // Wait if the ticket pool is full
             try {
                 System.out.println(Thread.currentThread().getName() +", Ticket pool is full! Waiting...");
-                wait();
-            } catch (InterruptedException e) {
+                wait(5000);    // Wait for a maximum of 5 seconds
+
+                if (System.currentTimeMillis() - startTime > 5000) {
+                    System.out.println("\n"+ Thread.currentThread().getName() + " waited too long. Exiting...");
+                    TicketSystem.stopSystem();
+                    return;
+                }
+            }
+            catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 System.out.println( Thread.currentThread().getName() + " thread got Interrupted. Ticket release Unsuccessful!");
                 return;
@@ -44,14 +52,21 @@ public class TicketPool {
      * @return ticket
      */
     public synchronized Ticket buyTicket() {
-        // Wait if the ticketQueue is empty
-        while (ticketQueue.isEmpty()) {
+        long startTime = System.currentTimeMillis();
+
+        while (ticketQueue.isEmpty()) {     // Wait if the ticketQueue is empty
             try {
-                System.out.println(Thread.currentThread().getName() +", Currently no tickets available. Please wait till tickets are available");
-                wait();
-            } catch (InterruptedException e) {
+                System.out.println(Thread.currentThread().getName() +", No tickets available. Please wait...");
+                wait(5000);     // Wait for a maximum of 5 seconds
+
+                if (System.currentTimeMillis() - startTime > 5000) {
+                    System.out.println("\n"+ Thread.currentThread().getName() + " waited too long. Exiting...");
+                    TicketSystem.stopSystem();
+                    return null;
+                }
+            }
+            catch (InterruptedException e) {
                 Thread.currentThread().interrupt(); // sets the thread's flag as interrupted
-                //System.out.println( Thread.currentThread().getName() + " thread got Interrupted while buying a ticket");
                 return null; // Thread will stop executing the loop
             }
         }
