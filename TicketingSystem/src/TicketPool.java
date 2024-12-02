@@ -23,7 +23,7 @@ public class TicketPool {
         // Wait if the ticket pool is full
         while (ticketQueue.size() >= maximumCapacity) {
             try {
-                System.out.println("Dear " + Thread.currentThread().getName() +", Ticket pool is full! Please wait until space available");
+                System.out.println(Thread.currentThread().getName() +", Ticket pool is full! Waiting...");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -47,7 +47,7 @@ public class TicketPool {
         // Wait if the ticketQueue is empty
         while (ticketQueue.isEmpty()) {
             try {
-                System.out.println("Dear " + Thread.currentThread().getName() +", Currently no tickets available. Please wait till tickets are available");
+                System.out.println(Thread.currentThread().getName() +", Currently no tickets available. Please wait till tickets are available");
                 wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt(); // sets the thread's flag as interrupted

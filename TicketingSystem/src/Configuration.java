@@ -12,17 +12,17 @@ public class Configuration {
     private int totalTickets;   // Total number of tickets which are already added to the ticket pool
     private int ticketReleaseRate;  // in milliseconds
     private int customerRetrievalRate; // in milliseconds
-    private int maxTicketCapacity;  // Maximum capacity of the ticket pool
+    private int maxTicketCapacity;
     private int totalVendors;
     private int totalCustomers;
-    private int ticketsPerRelease;
+    private int ticketsPerRelease; //total tickets which a vendor will release
     private int ticketsPerPurchase;
 
     //Constructor
     public Configuration() {
         this.totalTickets = 10;
-        this.ticketReleaseRate = 1000; // Default: 1 second
-        this.customerRetrievalRate = 1000; // Default: 1 second
+        this.ticketReleaseRate = 1000; //  1 second
+        this.customerRetrievalRate = 1000;
         this.maxTicketCapacity = 20;
         this.totalVendors = 5;
         this.totalCustomers = 5;
@@ -61,7 +61,7 @@ public class Configuration {
         while(!valid) {
             try{
                 System.out.print(prompt);
-                value = Integer.parseInt(scanner.nextLine());   // Take input as a string and convert to int (Check correct input type)
+                value = Integer.parseInt(scanner.nextLine());   // Take as a string and convert to int (Check correct input type)
 
                 if (value < min || value > max) {  // Check if Input within range. Accepted
                     System.out.println("Invalid input. Value must be between "+ min + " and "  + max + ".");
