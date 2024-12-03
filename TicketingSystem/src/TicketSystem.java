@@ -1,4 +1,13 @@
-import java.io.IOException;
+// MY ASSUMPTIONS //
+// SYSTEM AUTOMATICALLY STOPS - IF A VENDOR OR CUSTOMER WAITS MORE THAN 5 SECONDS
+// SYSTEM MANUALLY STOPS - BY PRESSING ENTER
+// IF NEW CONFIGURATION USED TO RUN THE SYSTEM, IT WILL BE SAVED INTO CINFIG.JSON FILE
+// IF THE DEFAULT CONFIGURATION IS USED, IT WON't SAVE IT TO CONFIG FILE AS IT IS ALREADY AVAILABLE IN THE SYSTEM
+// MINIMUM VALUE FOR TOTAL TICKETS TO BUY AND TOTAL TICKETS TO RELEASE PER PERSON IS 1
+// MAXIMUM IS THE TICKET POOL CAPACITY
+// ALL THE CUSTOMERS HAVE A COMMON TICKET RELEASE RATE AND TOTAL NUMBER OF TICKETS TO BUY
+// ALL VENDORS HAVE A COMMON TICKET RELEASE RATE AND TOTAL NUMBER OF TICKETS TO RELEASE
+
 import java.util.Scanner;
 
 public class TicketSystem {
@@ -59,7 +68,8 @@ public class TicketSystem {
                     }
 
                     // Wait for user input to stop
-                    System.out.println("\nSystem is running. Press 'Enter' to stop...\n");
+                    System.out.println("System is running. Press 'Enter' to stop...");
+                    System.out.println();
                     input.nextLine();
                     stopSystem(); // Manually stop the system via user input
 

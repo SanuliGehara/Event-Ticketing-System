@@ -28,7 +28,7 @@ public class TicketPool {
      * Adds a new ticket to the ticket queue
      * @param ticket
      */
-    public synchronized void addTicket(Ticket ticket) {
+    public void addTicket(Ticket ticket) {
         lock.lock();
 
         try {
@@ -62,7 +62,7 @@ public class TicketPool {
      * Retrieves the first element / ticket from the ticket queue
      * @return ticket
      */
-    public synchronized Ticket buyTicket() {
+    public Ticket buyTicket() {
         lock.lock();
 
         try {
