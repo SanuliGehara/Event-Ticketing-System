@@ -9,6 +9,7 @@
 // ALL VENDORS HAVE A COMMON TICKET RELEASE RATE AND TOTAL NUMBER OF TICKETS TO RELEASE
 
 import java.util.Scanner;
+import java.util.concurrent.CountDownLatch;
 
 public class TicketSystem {
     private static volatile boolean isRunning = true; // Flag to control thread termination
@@ -16,7 +17,7 @@ public class TicketSystem {
     public static void main(String[] args) {
         //Load configuration
         Configuration config = Configuration.loadConfiguration();
-
+        Scanner input = new Scanner(System.in);
         boolean choiceFlag = true; // flag to check status
 
         // configure system
@@ -25,7 +26,7 @@ public class TicketSystem {
             System.out.println("____________ Configuration Settings ______________");
             System.out.println("1. Start \n2.Stop");
             System.out.print("\nSelect an option to start or end the application: ");
-            Scanner input = new Scanner(System.in);
+
             String startInput = input.nextLine();
 
             switch (startInput) {
@@ -47,6 +48,8 @@ public class TicketSystem {
 
                     // Initialize ticket pool with to start with default configuration
                     TicketPool ticketPool = new TicketPool(config.getMaxTicketCapacity(), config.getTotalTickets());
+                    int totalThreads = config.getTotalVendors() + config.getTotalCustomers();
+                    CountDownLatch latch = new CountDownLatch(totalThreads);
 
                     // Initialize Arrays to manage threads for vendors and customers
                     Vendor[] vendors = new Vendor[config.getTotalVendors()];
@@ -55,33 +58,51 @@ public class TicketSystem {
                     // Create and start threads to run the application
                     Thread[] vendorThreads = new Thread[vendors.length];
                     for (int count = 0; count<vendors.length; count++) {
-                        vendors[count] = new Vendor("Vendor-"+(count+1), "password","V"+(count+1),ticketPool,config.getTicketsPerRelease(), config.getTicketReleaseRate());
+                        vendors[count] = new Vendor("Vendor-"+(count+1), "password","V"+(count+1),ticketPool,config.getTicketsPerRelease(), config.getTicketReleaseRate(),latch);
                         vendorThreads[count] = new Thread(vendors[count], "Vendor-" + (count + 1));
                         vendorThreads[count].start();
                     }
 
                     Thread[] customerThreads = new Thread[customers.length];
                     for (int count = 0; count < customers.length; count++) {
-                        customers[count] = new Customer("Customer-" + (count + 1), "password", "C" + (count + 1), ticketPool, config.getTicketsPerPurchase(), config.getCustomerRetrievalRate());
+                        customers[count] = new Customer("Customer-" + (count + 1), "password", "C" + (count + 1), ticketPool, config.getTicketsPerPurchase(), config.getCustomerRetrievalRate(),latch);
                         customerThreads[count] = new Thread(customers[count], "Customer-" + (count + 1));
                         customerThreads[count].start();
                     }
 
-                    // Wait for user input to stop
-                    System.out.println("System is running. Press 'Enter' to stop...");
-                    System.out.println();
-                    input.nextLine();
-                    stopSystem(); // Manually stop the system via user input
+                    // Allow manual termination
+                    Thread stopper = new Thread(() -> {
+                        System.out.println("System is running. Press 'Enter' to stop...");
+                        input.nextLine();
+                        stopSystem();
+                        for (Thread thread : vendorThreads) thread.interrupt();
+                        for (Thread thread : customerThreads) thread.interrupt();
+                    });
+                    stopper.start();
 
-                    // Stop all threads
-                    for (Thread thread : vendorThreads) {
-                        thread.interrupt();
+                    try {
+                        latch.await(); // Wait for all threads to finish
+                        stopSystem();
+                        System.out.println("All operations completed. System shutting down automatically...");
+                        System.exit(0);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                     }
-                    for (Thread thread : customerThreads) {
-                        thread.interrupt();
-                    }
-
-                    System.out.println("System stopped.");
+//                    // Wait for user input to stop
+//                    System.out.println("System is running. Press 'Enter' to stop...");
+//                    System.out.println();
+//                    input.nextLine();
+//                    stopSystem(); // Manually stop the system via user input
+//
+//                    // Stop all threads
+//                    for (Thread thread : vendorThreads) {
+//                        thread.interrupt();
+//                    }
+//                    for (Thread thread : customerThreads) {
+//                        thread.interrupt();
+//                    }
+//
+//                    System.out.println("System stopped.");
                     break;
 
                 case "2":
@@ -102,6 +123,6 @@ public class TicketSystem {
     public static void stopSystem() {
         isRunning = false;
         System.out.println("System is shutting down...");
-        System.exit(0);
+        Thread.currentThread().interrupt();
     }
 }

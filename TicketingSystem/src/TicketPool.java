@@ -33,13 +33,14 @@ public class TicketPool {
 
         try {
             while (ticketQueue.size() >= maximumCapacity) {
+                if (!TicketSystem.isRunning()) {
+                    System.out.println(Thread.currentThread().getName() + " exiting because system is stopping.");
+                    return; // Exit when the system is stopping
+                }
                 System.out.println(Thread.currentThread().getName() + ", Ticket pool is full! Waiting...");
-
-                //wait for a maximum of 5 seconds till space available
-                if (!notFull.await(5, TimeUnit.SECONDS)) {
-                    System.out.println("\n" + Thread.currentThread().getName() + " waited too long. Exiting...");
-                    TicketSystem.stopSystem();
-                    return;
+                if (!notFull.await(5, TimeUnit.SECONDS)) { // Wait up to 5 seconds
+                    System.out.println(Thread.currentThread().getName() + " waited too long. Exiting...");
+                    return; // Exit if timeout occurs
                 }
             }
 
@@ -67,12 +68,14 @@ public class TicketPool {
 
         try {
             while(ticketQueue.isEmpty()) {  // wait if ticketQueue is empty
-                System.out.println(Thread.currentThread().getName() + ", No tickets available. Please wait...");
-
-                //wait for a maximum of 5 seconds
-                if (!notEmpty.await(5, TimeUnit.SECONDS)) {
-                    System.out.println("\n" + Thread.currentThread().getName() + " waited too long. Exiting...");
-                    TicketSystem.stopSystem();
+                if (!TicketSystem.isRunning()) {
+                    System.out.println(Thread.currentThread().getName() + " exiting because system is stopping.");
+                    return null; // Exit when the system is stopping
+                }
+                System.out.println(Thread.currentThread().getName() + ", No tickets available. Waiting...");
+                if (!notEmpty.await(5, TimeUnit.SECONDS)) { // Wait up to 5 seconds
+                    System.out.println(Thread.currentThread().getName() + " waited too long. Exiting...");
+                    return null; // Exit if timeout occurs
                 }
             }
 
