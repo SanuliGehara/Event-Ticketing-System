@@ -29,8 +29,9 @@ public class Customer extends User {
             Thread.currentThread().interrupt();
         } finally {
             latch.countDown(); // Signal that this thread has completed
+            System.out.println(Thread.currentThread().getName() + " finished purchasing tickets.");
         }
-        System.out.println(Thread.currentThread().getName() + " finished purchasing tickets.");
+//        System.out.println(Thread.currentThread().getName() + " finished purchasing tickets.");
     }
 
 //    @Override

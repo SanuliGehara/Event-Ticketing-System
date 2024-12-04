@@ -34,8 +34,9 @@ public class Vendor extends User {
             Thread.currentThread().interrupt();
         } finally {
             latch.countDown(); // Signal that this thread has completed
+            System.out.println(getUsername() + " finished adding tickets.");
         }
-        System.out.println(getUsername() + " finished adding tickets.");
+//        System.out.println(getUsername() + " finished adding tickets.");
     }
 
 //    public void run() {

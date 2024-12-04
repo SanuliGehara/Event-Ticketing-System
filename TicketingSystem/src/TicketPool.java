@@ -39,7 +39,7 @@ public class TicketPool {
                 }
                 System.out.println(Thread.currentThread().getName() + ", Ticket pool is full! Waiting...");
                 if (!notFull.await(5, TimeUnit.SECONDS)) { // Wait up to 5 seconds
-                    System.out.println(Thread.currentThread().getName() + " waited too long. Exiting...");
+                    System.out.println(Thread.currentThread().getName() + " waited too long. This ticket Release cancelled since the pool is full! Exiting...");
                     return; // Exit if timeout occurs
                 }
             }
@@ -74,7 +74,7 @@ public class TicketPool {
                 }
                 System.out.println(Thread.currentThread().getName() + ", No tickets available. Waiting...");
                 if (!notEmpty.await(5, TimeUnit.SECONDS)) { // Wait up to 5 seconds
-                    System.out.println(Thread.currentThread().getName() + " waited too long. Exiting...");
+                    System.out.println(Thread.currentThread().getName() + " waited too long. This ticket transaction cancelled due to no ticket availability! Exiting...");
                     return null; // Exit if timeout occurs
                 }
             }

@@ -104,7 +104,7 @@ public class Configuration {
             return new Gson().fromJson(reader, Configuration.class);
         }
         catch (IOException e) {
-            System.out.println("No Configuration file found! Starting with default configuration");
+            System.out.println("\nNo Configuration file found! Starting with default configuration...");
             return new Configuration();
         }
     }
